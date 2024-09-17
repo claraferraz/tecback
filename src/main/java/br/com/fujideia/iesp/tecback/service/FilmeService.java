@@ -1,16 +1,13 @@
 package br.com.fujideia.iesp.tecback.service;
-import br.com.fujideia.iesp.tecback.model.Ator;
-import br.com.fujideia.iesp.tecback.model.Diretor;
-import br.com.fujideia.iesp.tecback.model.Filme;
-import br.com.fujideia.iesp.tecback.model.Genero;
-import br.com.fujideia.iesp.tecback.model.dto.AtorDTO;
-import br.com.fujideia.iesp.tecback.model.dto.DiretorDTO;
-import br.com.fujideia.iesp.tecback.model.dto.FilmeDTO;
-import br.com.fujideia.iesp.tecback.model.dto.GeneroDTO;
+
+import br.com.fujideia.iesp.tecback.model.*;
+import br.com.fujideia.iesp.tecback.model.dto.*;
 import br.com.fujideia.iesp.tecback.repository.FilmeRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -43,6 +40,7 @@ public class FilmeService {
             filme.setTitulo(filmeDTO.getTitulo());
             filme.setAnoLancamento(filmeDTO.getAnoLancamento());
             filme.setDiretor(convertToEntity(filmeDTO.getDiretor()));
+            filme.setProdutor(convertToEntity(filmeDTO.getProdutor()));
             filme.setAtores(filmeDTO.getAtores().stream().map(this::convertToEntity).collect(Collectors.toList()));
             filme.setGeneros(filmeDTO.getGeneros().stream().map(this::convertToEntity).collect(Collectors.toList()));
             return convertToDTO(filmeRepository.save(filme));
@@ -63,14 +61,15 @@ public class FilmeService {
                 filme.getTitulo(),
                 filme.getAnoLancamento(),
                 filme.getDiretor() != null ? new DiretorDTO(filme.getDiretor().getId(), filme.getDiretor().getNome()) : null,
-                filme.getAtores()
+                filme.getProdutor() != null ? new ProdutorDTO(filme.getProdutor().getId(), filme.getProdutor().getNome(), filme.getProdutor().getIdade(), filme.getProdutor().getNacionalidade()) : null,
+                filme.getAtores() != null ? filme.getAtores()
                         .stream()
                         .map(ator -> new AtorDTO(ator.getId(), ator.getNome()))
-                        .collect(Collectors.toList()),
-                filme.getGeneros()
+                        .collect(Collectors.toList()) : Collections.emptyList(),
+                filme.getGeneros() != null ? filme.getGeneros()
                         .stream()
                         .map(genero -> new GeneroDTO(genero.getId(), genero.getNome()))
-                        .collect(Collectors.toList())
+                        .collect(Collectors.toList()) : Collections.emptyList()
         );
     }
 
@@ -79,16 +78,18 @@ public class FilmeService {
         Filme filme = new Filme();
         filme.setTitulo(filmeDTO.getTitulo());
         filme.setAnoLancamento(filmeDTO.getAnoLancamento());
-        filme.setDiretor(convertToEntity(filmeDTO.getDiretor()));
-        filme.setAtores(filmeDTO.getAtores()
+        filme.setDiretor(filmeDTO.getDiretor() != null ? convertToEntity(filmeDTO.getDiretor()) : null);
+        filme.setProdutor(filmeDTO.getProdutor() != null ? convertToEntity(filmeDTO.getProdutor()) : null);
+        filme.setAtores(filmeDTO.getAtores() != null ? filmeDTO.getAtores()
                 .stream()
                 .map(this::convertToEntity)
-                .collect(Collectors.toList()));
-        filme.setGeneros(filmeDTO.getGeneros()
+                .collect(Collectors.toList()) : new ArrayList<>());
+        filme.setGeneros(filmeDTO.getGeneros() != null ? filmeDTO.getGeneros()
                 .stream()
                 .map(this::convertToEntity)
-                .collect(Collectors.toList()));
+                .collect(Collectors.toList()): new ArrayList<>());
         return filme;
+
     }
 
     private Diretor convertToEntity(DiretorDTO diretorDTO) {
@@ -99,6 +100,17 @@ public class FilmeService {
         diretor.setId(diretorDTO.getId());
         diretor.setNome(diretorDTO.getNome());
         return diretor;
+    }
+    private Produtor convertToEntity(ProdutorDTO produtorDTO) {
+        if (produtorDTO == null) {
+            return null;
+        }
+        Produtor produtor = new Produtor();
+        produtor.setId(produtorDTO.getId());
+        produtor.setNome(produtorDTO.getNome());
+        produtor.setIdade(produtorDTO.getIdade());
+        produtor.setNacionalidade(produtorDTO.getNacionalidade());
+        return produtor;
     }
 
     private Ator convertToEntity(AtorDTO atorDTO) {
@@ -111,7 +123,7 @@ public class FilmeService {
     private Genero convertToEntity(GeneroDTO generoDTO) {
         Genero genero = new Genero();
         genero.setId(generoDTO.getId());
-        genero.setNome(generoDTO.getDescricao());
+        genero.setNome(generoDTO.getNome());
         return genero;
     }
 }
