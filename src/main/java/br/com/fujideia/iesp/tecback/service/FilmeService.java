@@ -55,6 +55,20 @@ public class FilmeService {
         return false;
     }
 
+  public List<FilmeDTO> listarPorAno(int ano) {
+        return filmeRepository.buscarPorAno(ano)
+                .stream()
+                .map(this::convertToDTO)
+                .collect(Collectors.toList());
+    }
+
+    public List<FilmeDTO> listarOrdenadoPorAno() {
+        return filmeRepository.ordenarPorAno()
+                .stream()
+                .map(this::convertToDTO)
+                .collect(Collectors.toList());
+    }
+
     private FilmeDTO convertToDTO(Filme filme) {
         return new FilmeDTO(
                 filme.getId(),

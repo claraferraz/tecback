@@ -32,6 +32,20 @@ public class FilmeController {
                 .orElseGet(() -> ResponseEntity.notFound().build());
     }
 
+    @GetMapping("/find/{ano}")
+    public ResponseEntity<List<FilmeDTO>> listarPorAno(@PathVariable int ano) {
+        log.info("Chamando listarPorAno no FilmeController");
+        List<FilmeDTO> filmes = filmeService.listarPorAno(ano);
+        return ResponseEntity.ok(filmes);
+    }
+
+    @GetMapping("/ano")
+    public ResponseEntity<List<FilmeDTO>> listarOrdenadoPorAno() {
+        log.info("Chamando listarPorAno no FilmeController");
+        List<FilmeDTO> filmes = filmeService.listarOrdenadoPorAno();
+        return ResponseEntity.ok(filmes);
+    }
+
     @PostMapping
     public ResponseEntity<FilmeDTO> criarFilme(@RequestBody FilmeDTO filmeDTO) {
         log.info("Chamando criarFilme no FilmeController com dados: {}", filmeDTO);
