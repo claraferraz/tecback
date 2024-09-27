@@ -1,6 +1,8 @@
 package br.com.fujideia.iesp.tecback.controller;
 
+import br.com.fujideia.iesp.tecback.model.Filme;
 import br.com.fujideia.iesp.tecback.model.dto.FilmeDTO;
+import br.com.fujideia.iesp.tecback.repository.FilmeRepository;
 import br.com.fujideia.iesp.tecback.service.FilmeService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -16,6 +18,7 @@ import java.util.Optional;
 public class FilmeController {
 
     private final FilmeService filmeService;
+    private final FilmeRepository filmeRepository;
 
     @GetMapping
     public ResponseEntity<List<FilmeDTO>> listarTodos() {

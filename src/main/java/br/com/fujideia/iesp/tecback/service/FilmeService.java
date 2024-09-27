@@ -75,7 +75,7 @@ public class FilmeService {
                 filme.getTitulo(),
                 filme.getAnoLancamento(),
                 filme.getDiretor() != null ? new DiretorDTO(filme.getDiretor().getId(), filme.getDiretor().getNome()) : null,
-                filme.getProdutor() != null ? new ProdutorDTO(filme.getProdutor().getId(), filme.getProdutor().getNome(), filme.getProdutor().getIdade(), filme.getProdutor().getNacionalidade()) : null,
+                filme.getProdutor() != null ? new ProdutorSimplesDTO(filme.getProdutor().getId(), filme.getProdutor().getNome(), filme.getProdutor().getIdade(), filme.getProdutor().getNacionalidade()) : null,
                 filme.getAtores() != null ? filme.getAtores()
                         .stream()
                         .map(ator -> new AtorDTO(ator.getId(), ator.getNome()))
@@ -88,7 +88,7 @@ public class FilmeService {
     }
 
 
-    private Filme convertToEntity(FilmeDTO filmeDTO) {
+    public Filme convertToEntity(FilmeDTO filmeDTO) {
         Filme filme = new Filme();
         filme.setTitulo(filmeDTO.getTitulo());
         filme.setAnoLancamento(filmeDTO.getAnoLancamento());
@@ -103,7 +103,6 @@ public class FilmeService {
                 .map(this::convertToEntity)
                 .collect(Collectors.toList()): new ArrayList<>());
         return filme;
-
     }
 
     private Diretor convertToEntity(DiretorDTO diretorDTO) {
@@ -115,15 +114,17 @@ public class FilmeService {
         diretor.setNome(diretorDTO.getNome());
         return diretor;
     }
-    private Produtor convertToEntity(ProdutorDTO produtorDTO) {
-        if (produtorDTO == null) {
+    private Produtor convertToEntity(ProdutorSimplesDTO produtorSimplesDTO) {
+        if (produtorSimplesDTO == null) {
             return null;
         }
         Produtor produtor = new Produtor();
-        produtor.setId(produtorDTO.getId());
-        produtor.setNome(produtorDTO.getNome());
-        produtor.setIdade(produtorDTO.getIdade());
-        produtor.setNacionalidade(produtorDTO.getNacionalidade());
+        produtor.setId(produtorSimplesDTO.getId());
+        produtor.setNome(produtorSimplesDTO.getNome());
+        produtor.setIdade(produtorSimplesDTO.getIdade());
+        produtor.setNacionalidade(produtorSimplesDTO.getNacionalidade());
+        produtor.setFilmesProduzidos(null);
+
         return produtor;
     }
 

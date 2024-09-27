@@ -14,7 +14,7 @@ public class FilmeDTO {
     private String titulo;
     private int anoLancamento;
     private DiretorDTO diretor;
-    private ProdutorDTO produtor;
+    private ProdutorSimplesDTO produtor;
     private List<AtorDTO> atores;
     private List<GeneroDTO> generos;
 }

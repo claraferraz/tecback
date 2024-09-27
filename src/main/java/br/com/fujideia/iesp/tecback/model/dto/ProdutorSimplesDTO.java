@@ -4,15 +4,12 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.util.List;
-
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class ProdutorDTO {
+public class ProdutorSimplesDTO {
     private Long id;
     private String nome;
     private int idade;
     private String nacionalidade;
-    private List<FilmeSimplesDTO> filmes;
 }

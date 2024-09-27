@@ -21,6 +21,7 @@ public class Filme {
     @JoinColumn(name = "diretor_id")
     private Diretor diretor;
 
+
     @ManyToOne
     @JoinColumn(name = "produtor_id")
     private Produtor produtor;

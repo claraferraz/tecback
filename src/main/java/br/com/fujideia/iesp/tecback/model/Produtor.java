@@ -1,5 +1,7 @@
 package br.com.fujideia.iesp.tecback.model;
 
+import br.com.fujideia.iesp.tecback.model.dto.FilmeDTO;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.Data;
 import lombok.NoArgsConstructor;
